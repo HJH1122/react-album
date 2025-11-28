@@ -5,9 +5,12 @@ import CommonNav from "@/components/common/navigation/CommonNav";
 import CommonFooter from "@/components/common/footer/CommonFooter";
 import Card from "./components/Card";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import type { CardDTO } from "./types/card";
 
 function index() {
+    const [imgUrls, setImageUrls] = useState([]);
+
     const getData = async () => {
         const API_URL = "https://api.unsplash.com/search/photos";
         const API_KEY = "EPWseG23BNY5-VOFjdlw09dAlD23w";
@@ -22,10 +25,18 @@ function index() {
                 `${API_URL}?query=${searchValue}&client_id=${API_KEY}&page=${pageValue}&per_page=${PER_PAGE}`
             );
             console.log(res);
+
+            if (res.status === 200) {
+                setImageUrls(res.data.results);
+            }
         } catch (error) {
             console.log(error);
         }
     };
+
+    const cardList = imgUrls.map((card: CardDTO) => {
+        return <Card data={card} key={card.id} />;
+    });
 
     useEffect(() => {
         getData();
@@ -48,10 +59,7 @@ function index() {
                     </div>
                 </div>
                 <div className={styles.page__contents__imageBox}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
+                    {cardList}
                 </div>
             </div>
             <CommonFooter />
