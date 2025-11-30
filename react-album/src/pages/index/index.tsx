@@ -4,43 +4,23 @@ import CommonSearchBar from "@/components/common/searchBar/CommonSearchBar";
 import CommonNav from "@/components/common/navigation/CommonNav";
 import CommonFooter from "@/components/common/footer/CommonFooter";
 import Card from "./components/Card";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import type { CardDTO } from "./types/card";
+import { useRecoilValueLoadable } from "recoil";
+import { imageData } from "@/recoil/selectors/imageSelector";
 
 function index() {
-    const [imgUrls, setImageUrls] = useState([]);
+    const imgSelectorLoadable = useRecoilValueLoadable(imageData);
+    const imgSelector =
+        imgSelectorLoadable.state === "hasValue"
+            ? imgSelectorLoadable.contents
+            : null;
+    const [imgData, setImgData] = useState<CardDTO[]>([]);
 
-    const getData = async () => {
-        const API_URL = "https://api.unsplash.com/search/photos";
-        const API_KEY = "EPWseG23BNY5-VOFjdlw09dAlD23w";
-
-        const PER_PAGE = 30;
-
-        const searchValue = "Korea";
-        const pageValue = 100;
-
-        try {
-            const res = await axios.get(
-                `${API_URL}?query=${searchValue}&client_id=${API_KEY}&page=${pageValue}&per_page=${PER_PAGE}`
-            );
-            console.log(res);
-
-            if (res.status === 200) {
-                setImageUrls(res.data.results);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const cardList = imgUrls.map((card: CardDTO) => {
+    const CARD_LIST = imgSelector?.data?.results?.map((card: CardDTO) => {
         return <Card data={card} key={card.id} />;
     });
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     return (
         <div className={styles.page}>
@@ -59,7 +39,7 @@ function index() {
                     </div>
                 </div>
                 <div className={styles.page__contents__imageBox}>
-                    {cardList}
+                    {CARD_LIST}
                 </div>
             </div>
             <CommonFooter />
