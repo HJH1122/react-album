@@ -9,6 +9,7 @@ import { useState } from "react";
 import type { CardDTO } from "./types/card";
 import { useRecoilValueLoadable } from "recoil";
 import { imageData } from "@/recoil/selectors/imageSelector";
+import DetailDialog from "@/components/common/dialog/DetailDialog";
 
 function index() {
     const imgSelectorLoadable = useRecoilValueLoadable(imageData);
@@ -17,9 +18,10 @@ function index() {
             ? imgSelectorLoadable.contents
             : null;
     const [imgData, setImgData] = useState<CardDTO[]>([]);
+    const [open, setOpen] = useState<boolean>(false);
 
     const CARD_LIST = imgSelector?.data?.results?.map((card: CardDTO) => {
-        return <Card data={card} key={card.id} />;
+        return <Card data={card} key={card.id} handleDialog={setOpen} />;
     });
 
     return (
@@ -43,6 +45,7 @@ function index() {
                 </div>
             </div>
             <CommonFooter />
+            {open && <DetailDialog />}
         </div>
     );
 }
