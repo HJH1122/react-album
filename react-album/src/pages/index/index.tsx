@@ -17,11 +17,18 @@ function index() {
         imgSelectorLoadable.state === "hasValue"
             ? imgSelectorLoadable.contents
             : null;
-    const [imgData, setImgData] = useState<CardDTO[]>([]);
+    const [imgData, setImgData] = useState<CardDTO>();
     const [open, setOpen] = useState<boolean>(false);
 
     const CARD_LIST = imgSelector?.data?.results?.map((card: CardDTO) => {
-        return <Card data={card} key={card.id} handleDialog={setOpen} />;
+        return (
+            <Card
+                data={card}
+                key={card.id}
+                handleDialog={setOpen}
+                handleSetData={setImgData}
+            />
+        );
     });
 
     return (
@@ -45,7 +52,7 @@ function index() {
                 </div>
             </div>
             <CommonFooter />
-            {open && <DetailDialog />}
+            {open && <DetailDialog data={imgData} handleDialog={setOpen} />}
         </div>
     );
 }
