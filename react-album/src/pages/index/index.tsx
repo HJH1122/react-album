@@ -46,7 +46,7 @@ function index() {
         }
 
         // 여기서는 반드시 hasValue
-        const data = imgSelector.contents ?? [];
+        const data = imgSelector.contents.results ?? [];
         return data.map((card: CardDTO) => (
             <Card
                 data={card}
