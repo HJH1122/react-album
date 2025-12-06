@@ -2,9 +2,11 @@ import { useState } from "react";
 import styles from "./CommonSearchBar.module.scss";
 import { useRecoilState } from "recoil";
 import { searchState } from "@/recoil/atoms/searchState";
+import { pageState } from "@/recoil/atoms/pageState";
 
 function CommonSearchBar() {
     const [search, setSearch] = useRecoilState(searchState);
+    const [page, setPage] = useRecoilState(pageState);
     const [text, setText] = useState("");
 
     const onChange = (event) => {
@@ -14,8 +16,10 @@ function CommonSearchBar() {
     const onSearch = () => {
         if (text === "") {
             setSearch("Korea");
+            setPage(1);
         } else {
             setSearch(text);
+            setPage(1);
         }
     };
 
@@ -23,8 +27,10 @@ function CommonSearchBar() {
         if (event.key === "Enter") {
             if (text === "") {
                 setSearch("Korea");
+                setPage(1);
             } else {
                 setSearch(text);
+                setPage(1);
             }
         }
     };
