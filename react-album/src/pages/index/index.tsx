@@ -10,6 +10,7 @@ import type { CardDTO } from "./types/card";
 import { useRecoilValueLoadable } from "recoil";
 import { imageData } from "@/recoil/selectors/imageSelector";
 import DetailDialog from "@/components/common/dialog/DetailDialog";
+import Loading from "./components/Loading";
 
 function index() {
     const imgSelector = useRecoilValueLoadable(imageData);
@@ -37,7 +38,7 @@ function index() {
 
     const CARD_LIST = useMemo(() => {
         if (imgSelector.state === "loading") {
-            return <div>loading...</div>;
+            return <Loading />;
         }
 
         if (imgSelector.state === "hasError") {
