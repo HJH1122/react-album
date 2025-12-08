@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "@pages/index/index";
+import BookmarkPage from "@pages/bookmark/index";
 import { RecoilRoot } from "recoil";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
                 <Routes>
                     <Route index path="/" element={<MainPage />}></Route>
                     <Route path="/:id" element={<MainPage />}></Route>
+                    <Route path="/bookmark" element={<BookmarkPage />}></Route>
                 </Routes>
             </BrowserRouter>
         </RecoilRoot>
